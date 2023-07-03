@@ -8,28 +8,34 @@ import {
 import db from '.';
 // import OtherModel from './OtherModel';
 
-class Example extends Model<InferAttributes<Example>,
-InferCreationAttributes<Example>> {
+class Example extends Model<
+InferAttributes<Example>,
+InferCreationAttributes<Example>
+> {
   declare id: CreationOptional<number>;
 }
 
-Example.init({
-  id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    primaryKey: true,
-    autoIncrement: true,
+Example.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
   },
-}, {
-  sequelize: db,
-  modelName: 'trybeEval',
-  timestamps: false,
-});
+  {
+    sequelize: db,
+    modelName: 'trybeEval',
+    timestamps: false,
+    underscored: true,
+  },
+);
 
 /**
-  * `Workaround` para aplicar as associations em TS:
-  * Associations 1:N devem ficar em uma das instâncias de modelo
-  * */
+ * `Workaround` para aplicar as associations em TS:
+ * Associations 1:N devem ficar em uma das instâncias de modelo
+ * */
 
 // OtherModel.belongsTo(Example, { foreignKey: 'campoA', as: 'campoEstrangeiroA' });
 // OtherModel.belongsTo(Example, { foreignKey: 'campoB', as: 'campoEstrangeiroB' });
