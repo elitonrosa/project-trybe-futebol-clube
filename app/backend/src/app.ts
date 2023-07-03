@@ -1,4 +1,5 @@
 import * as express from 'express';
+import router from './routes';
 
 class App {
   public app: express.Express;
@@ -7,6 +8,7 @@ class App {
     this.app = express();
 
     this.config();
+    this.routes();
 
     // Não remover essa ROTA
     this.app.get('/', (req, res) => res.json({ ok: true }));
@@ -25,7 +27,11 @@ class App {
   }
 
   public start(PORT: string | number): void {
-    this.app.listen(PORT, () => console.log(`Running on port ${PORT}`));
+    this.app.listen(PORT, () => console.log(`Running on port ${PORT}! 🚀`));
+  }
+
+  private routes(): void {
+    this.app.use(router);
   }
 }
 

@@ -6,14 +6,15 @@ import {
   CreationOptional,
 } from 'sequelize';
 import db from '.';
-import MatchModel from './MatchModel';
+import SequelizeMatch from './SequelizeMatch';
 
-class TeamModel extends Model<InferAttributes<TeamModel>, InferCreationAttributes<TeamModel>> {
+class SequelizeTeam extends Model<InferAttributes<SequelizeTeam>,
+InferCreationAttributes<SequelizeTeam>> {
   declare id: CreationOptional<number>;
   declare teamName: string;
 }
 
-TeamModel.init({
+SequelizeTeam.init({
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -33,7 +34,7 @@ TeamModel.init({
   underscored: true,
 });
 
-TeamModel.hasMany(MatchModel, { foreignKey: 'home_team_id', as: 'homeTeam' });
-TeamModel.hasMany(MatchModel, { foreignKey: 'away_team_id', as: 'awayTeam' });
+SequelizeTeam.hasMany(SequelizeMatch, { foreignKey: 'home_team_id', as: 'homeTeam' });
+SequelizeTeam.hasMany(SequelizeMatch, { foreignKey: 'away_team_id', as: 'awayTeam' });
 
-export default TeamModel;
+export default SequelizeTeam;
