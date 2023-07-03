@@ -16,3 +16,8 @@ export const teams = [
     teamName: 'Corinthians',
   },
 ]
+
+export const team = {
+  id: 1,
+  teamName: 'Palmeiras',
+}

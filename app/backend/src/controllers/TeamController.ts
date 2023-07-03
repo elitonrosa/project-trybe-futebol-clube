@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import mapStatusHTTP from '../util/mapStatusHTTP';
 import TeamService from '../services/TeamService';
 
 export default class TeamController {
@@ -7,5 +8,10 @@ export default class TeamController {
   async getAll(_req: Request, res: Response): Promise<Response> {
     const { data } = await this.teamService.getAll();
     return res.status(200).json(data);
+  }
+
+  async getById(req: Request, res: Response): Promise<Response> {
+    const { data, status } = await this.teamService.getById(Number(req.params.id));
+    return res.status(mapStatusHTTP(status)).json(data);
   }
 }
