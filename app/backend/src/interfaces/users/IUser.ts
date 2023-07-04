@@ -7,3 +7,9 @@ export default interface IUser {
   email: string,
   password: string,
 }
+
+export interface IUserPayload {
+  id: number,
+  username: string,
+  email: string,
+}
