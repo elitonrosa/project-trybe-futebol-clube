@@ -8,3 +8,7 @@ export interface ICRUDReaderModel<T> {
 export interface ICRUDWriterModel<T> {
   create(data: NewEntity<T>): Promise<T>;
 }
+
+export interface ICRUDUpdaterModel<T> {
+  update(id: ID, data: Partial<T>): Promise<boolean>;
+}

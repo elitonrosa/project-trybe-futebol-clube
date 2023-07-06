@@ -1,3 +1,5 @@
+import SequelizeMatch from "../../database/models/SequelizeMatch";
+
 export const createMatch = {
   homeTeamId: 16,
   awayTeamId: 8,
@@ -56,6 +58,37 @@ export const matches = [
   },
 ];
 
+export const mastchesSequelize = [
+  {
+    id: 1,
+    homeTeamId: 16,
+    homeTeamGoals: 1,
+    awayTeamId: 8,
+    awayTeamGoals: 1,
+    inProgress: false,
+    homeTeam: {
+      teamName: "São Paulo",
+    },
+    awayTeam: {
+      teamName: "Grêmio",
+    },
+  },
+  {
+    id: 2,
+    homeTeamId: 16,
+    homeTeamGoals: 2,
+    awayTeamId: 9,
+    awayTeamGoals: 0,
+    inProgress: true,
+    homeTeam: {
+      teamName: "São Paulo",
+    },
+    awayTeam: {
+      teamName: "Internacional",
+    },
+  },
+] as unknown as SequelizeMatch[];
+
 export const matchesInProgess = [
   {
     id: 41,
@@ -85,7 +118,7 @@ export const matchesInProgess = [
       teamName: "Avaí/Kindermann",
     },
   },
-];
+] as unknown as SequelizeMatch[];
 
 export const matchesFinished = [
   {
@@ -116,7 +149,7 @@ export const matchesFinished = [
       teamName: "Santos",
     },
   },
-];
+] as unknown as SequelizeMatch[];
 
 export const token =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJVc2VyIiwicm9sZSI6InVzZXIiLCJlbWFpbCI6InVzZXJAdXNlci5jb20iLCJpYXQiOjE2ODg0MzU1MTV9.gJoi3_Rbf0vSVmF-vo9r1J1GEj8Aa3se95TsFrkVqaU";

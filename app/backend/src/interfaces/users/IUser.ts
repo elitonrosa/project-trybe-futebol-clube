@@ -11,5 +11,6 @@ export default interface IUser {
 export interface IUserPayload {
   id: number,
   username: string,
+  role: UserRole,
   email: string,
 }

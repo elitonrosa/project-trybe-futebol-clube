@@ -8,6 +8,7 @@ import {
   createMatch,
   createMatchWithConflict,
   createMatchWithInvalid,
+  mastchesSequelize,
   match,
   matchUpdate,
   matchUpdated,
@@ -16,7 +17,6 @@ import {
   matchesInProgess,
   token,
 } from "./mocks/Match.mocks";
-import { Sequelize } from "sequelize";
 
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -25,8 +25,7 @@ describe("Testes da rota /matches", () => {
   describe("GET", () => {
     describe("/matches", () => {
       it("Deve retornar status 200 e um array de partidas", async () => {
-        const matchesMock = SequelizeMatch.bulkBuild(matches);
-        sinon.stub(SequelizeMatch, "findAll").resolves(matchesMock);
+        sinon.stub(SequelizeMatch, "findAll").resolves(mastchesSequelize);
 
         const response = await chai.request(app).get("/matches");
 
@@ -37,8 +36,7 @@ describe("Testes da rota /matches", () => {
 
     describe("/matches?inProgress=true", () => {
       it("Deve retornar status 200 e um array de partidas em andamento", async () => {
-        const matchesMock = SequelizeMatch.bulkBuild(matchesInProgess);
-        sinon.stub(SequelizeMatch, "findAll").resolves(matchesMock);
+        sinon.stub(SequelizeMatch, "findAll").resolves(matchesInProgess);
 
         const response = await chai
           .request(app)
@@ -51,8 +49,7 @@ describe("Testes da rota /matches", () => {
 
     describe("/matches?inProgress=false", () => {
       it("Deve retornar status 200 e um array de partidas finalizadas", async () => {
-        const matchesMock = SequelizeMatch.bulkBuild(matchesFinished);
-        sinon.stub(SequelizeMatch, "findAll").resolves(matchesMock);
+        sinon.stub(SequelizeMatch, "findAll").resolves(matchesFinished);
 
         const response = await chai
           .request(app)
@@ -66,7 +63,7 @@ describe("Testes da rota /matches", () => {
 
   describe("PATCH", () => {
     describe("/matches/:id/finish", () => {
-      it("Deve retornar status 200 e uma mensagem de sucesso", async () => {
+      it("Deve retornar status 200 e uma mensagem de sucesso caso a partida seja finalizada", async () => {
         sinon.stub(SequelizeMatch, "update").resolves([1]);
 
         const response = await chai
@@ -79,7 +76,7 @@ describe("Testes da rota /matches", () => {
       });
 
       it("Deve retornar status 404 e uma mensagem de erro caso a partida não exista", async () => {
-        sinon.stub(SequelizeMatch, "findByPk").resolves(null);
+        sinon.stub(SequelizeMatch, "update").resolves([0]);
 
         const response = await chai
           .request(app)
@@ -87,7 +84,9 @@ describe("Testes da rota /matches", () => {
           .set("Authorization", token);
 
         expect(response.status).to.be.eq(404);
-        expect(response.body).to.be.deep.eq({ message: "Not found" });
+        expect(response.body).to.be.deep.eq({
+          message: "Not found or match already finished",
+        });
       });
 
       it("Deve retornar status 401 e uma mensagem de erro caso o token não seja informado", async () => {
@@ -121,22 +120,28 @@ describe("Testes da rota /matches", () => {
           .patch("/matches/1")
           .set("Authorization", token)
           .send(matchUpdate);
-
+        
         expect(response.status).to.be.eq(200);
-        expect(response.body).to.be.deep.eq(matchUpdated);
+        expect(response.body).to.be.deep.eq(matchUpdate);
       });
 
-      it("Deve retornar status 404 e uma mensagem de erro caso a partida não exista", async () => {
-        sinon.stub(SequelizeMatch, "update").resolves([0]);
+      it("Deve retornar status 404 e uma mensagem de erro caso a partida já esteja finalizada ou não exista", async () => {
+        const matchMock = SequelizeMatch.build({
+          ...match,
+          inProgress: false,
+        });
+        sinon.stub(SequelizeMatch, "findByPk").resolves(matchMock);
 
         const response = await chai
           .request(app)
-          .patch("/matches/1000")
+          .patch("/matches/1")
           .set("Authorization", token)
           .send(matchUpdate);
 
         expect(response.status).to.be.eq(404);
-        expect(response.body).to.be.deep.eq({ message: "Not found" });
+        expect(response.body).to.be.deep.eq({
+          message: "Not Found or match already finished",
+        });
       });
 
       it("Deve retornar status 401 e uma mensagem de erro caso o token não seja informado", async () => {

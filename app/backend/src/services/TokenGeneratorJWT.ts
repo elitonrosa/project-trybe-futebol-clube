@@ -8,7 +8,7 @@ export default class TokenGeneratorJwt implements TokenGenerator {
   private secret = process.env.JWT_SECRET || 'the_secret';
 
   generate(user: IUser): string {
-    const { password, role, ...payload } = user;
+    const { password, ...payload } = user;
     const token = this.jwt.sign(payload, this.secret);
     return token;
   }

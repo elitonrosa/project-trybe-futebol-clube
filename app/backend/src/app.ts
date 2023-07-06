@@ -1,4 +1,5 @@
 import * as express from 'express';
+import * as cors from 'cors';
 import router from './routes';
 
 class App {
@@ -8,10 +9,12 @@ class App {
     this.app = express();
 
     this.config();
+    this.cors();
     this.routes();
 
     // Não remover essa ROTA
     this.app.get('/', (req, res) => res.json({ ok: true }));
+    this.app.get('*', (req, res) => res.status(404).json({ message: 'Not found' }));
   }
 
   private config():void {
@@ -24,6 +27,10 @@ class App {
 
     this.app.use(express.json());
     this.app.use(accessControl);
+  }
+
+  private cors(): void {
+    this.app.use(cors());
   }
 
   public start(PORT: string | number): void {
