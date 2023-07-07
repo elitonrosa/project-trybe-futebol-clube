@@ -112,8 +112,8 @@ describe("Testes da rota /matches", () => {
     describe("/matches/:id", () => {
       it("Deve retornar status 200 e uma mensagem de sucesso caso seja possível atualizar uma partida", async () => {
         const matchUpdatedMock = SequelizeMatch.build(matchUpdated);
-        sinon.stub(SequelizeMatch, "update").resolves([1]);
         sinon.stub(SequelizeMatch, "findByPk").resolves(matchUpdatedMock);
+        sinon.stub(SequelizeMatch, "update").resolves([1]);
 
         const response = await chai
           .request(app)

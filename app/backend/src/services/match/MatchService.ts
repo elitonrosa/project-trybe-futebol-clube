@@ -1,7 +1,7 @@
-import { ID, IMatch, NewEntity } from '../interfaces';
-import { ServiceResponse } from '../interfaces/ServiceResponse';
-import { IMatchScore } from '../interfaces/matches/IMatch';
-import MatchModel from '../models/MatchModel';
+import { ID, IMatch, NewEntity } from '../../interfaces';
+import { ServiceResponse } from '../../interfaces/ServiceResponse';
+import { IMatchScore } from '../../interfaces/matches/IMatch';
+import MatchModel from '../../models/MatchModel';
 
 export default class MatchService {
   constructor(private matchModel = new MatchModel()) {}
@@ -40,12 +40,7 @@ export default class MatchService {
         data: { message: 'Not Found or match already finished' },
       };
     }
-    if (
-      score.homeTeamGoals === match.homeTeamGoals
-      && score.awayTeamGoals === match.awayTeamGoals
-    ) {
-      return { status: 'SUCCESSFUL', data: score };
-    }
+
     await this.matchModel.update(id, score);
     return { status: 'SUCCESSFUL', data: score };
   }

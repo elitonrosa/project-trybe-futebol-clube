@@ -10,8 +10,16 @@ export default class MatchModel implements IMatchModel {
   async getAll(): Promise<IMatch[]> {
     const matches: IMatch[] = await this.model.findAll({
       include: [
-        { model: this.teamModel, as: 'homeTeam', attributes: { exclude: ['id'] } },
-        { model: this.teamModel, as: 'awayTeam', attributes: { exclude: ['id'] } },
+        {
+          model: this.teamModel,
+          as: 'homeTeam',
+          attributes: { exclude: ['id'] },
+        },
+        {
+          model: this.teamModel,
+          as: 'awayTeam',
+          attributes: { exclude: ['id'] },
+        },
       ],
     });
     return matches;
@@ -21,18 +29,54 @@ export default class MatchModel implements IMatchModel {
     const matches: IMatch[] = await this.model.findAll({
       where: { inProgress },
       include: [
-        { model: this.teamModel, as: 'homeTeam', attributes: { exclude: ['id'] } },
-        { model: this.teamModel, as: 'awayTeam', attributes: { exclude: ['id'] } },
+        {
+          model: this.teamModel,
+          as: 'homeTeam',
+          attributes: { exclude: ['id'] },
+        },
+        {
+          model: this.teamModel,
+          as: 'awayTeam',
+          attributes: { exclude: ['id'] },
+        },
       ],
     });
     return matches;
+  }
+
+  async getAllFinished(): Promise<IMatch[]> {
+    const matches: IMatch[] = await this.model.findAll({ where: { inProgress: false } });
+    return matches.map(
+      ({
+        id,
+        homeTeamId,
+        homeTeamGoals,
+        awayTeamId,
+        awayTeamGoals,
+        inProgress,
+      }) => ({
+        id,
+        homeTeamId,
+        homeTeamGoals,
+        awayTeamId,
+        awayTeamGoals,
+        inProgress,
+      }),
+    );
   }
 
   async getById(id: ID): Promise<IMatch | null> {
     const match = await this.model.findByPk(id);
     if (!match) return null;
     const { homeTeamId, homeTeamGoals, awayTeamId, awayTeamGoals, inProgress } = match;
-    return { homeTeamId, homeTeamGoals, awayTeamId, awayTeamGoals, inProgress, id };
+    return {
+      homeTeamId,
+      homeTeamGoals,
+      awayTeamId,
+      awayTeamGoals,
+      inProgress,
+      id,
+    };
   }
 
   async update(id: ID, data: Partial<IMatch>): Promise<boolean> {
@@ -42,7 +86,21 @@ export default class MatchModel implements IMatchModel {
 
   async create(data: NewEntity<IMatch>): Promise<IMatch> {
     const match = await this.model.create(data);
-    const { homeTeamId, homeTeamGoals, awayTeamId, awayTeamGoals, inProgress, id } = match;
-    return { homeTeamId, homeTeamGoals, awayTeamId, awayTeamGoals, inProgress, id };
+    const {
+      homeTeamId,
+      homeTeamGoals,
+      awayTeamId,
+      awayTeamGoals,
+      inProgress,
+      id,
+    } = match;
+    return {
+      homeTeamId,
+      homeTeamGoals,
+      awayTeamId,
+      awayTeamGoals,
+      inProgress,
+      id,
+    };
   }
 }

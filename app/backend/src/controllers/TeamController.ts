@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import mapStatusHTTP from '../utils/mapStatusHTTP';
-import TeamService from '../services/TeamService';
+import TeamService from '../services/team/TeamService';
 
 export default class TeamController {
   constructor(private teamService = new TeamService()) {}

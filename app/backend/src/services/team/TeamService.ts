@@ -1,6 +1,6 @@
-import { ServiceResponse } from '../interfaces/ServiceResponse';
-import { ID, ITeam } from '../interfaces';
-import TeamModel from '../models/TeamModel';
+import { ServiceResponse } from '../../interfaces/ServiceResponse';
+import { ID, ITeam } from '../../interfaces';
+import TeamModel from '../../models/TeamModel';
 
 export default class TeamService {
   constructor(private teamModel = new TeamModel()) {}

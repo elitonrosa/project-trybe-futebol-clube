@@ -1,10 +1,11 @@
 import {
   ServiceResponse,
   ServiceResponseError,
-} from '../interfaces/ServiceResponse';
-import UserModel from '../models/UserModel';
-import EncrypterBcryptService from './EncrypterBcryptService';
-import TokenGeneratorJwt from './TokenGeneratorJWT';
+} from '../../interfaces/ServiceResponse';
+import { IUserPayload } from '../../interfaces/users/IUser';
+import UserModel from '../../models/UserModel';
+import EncrypterBcryptService from '../EncrypterBcryptService';
+import TokenGeneratorJwt from '../TokenGeneratorJWT';
 
 export default class UserService {
   private _unauthorizedResponse: ServiceResponseError = {
@@ -37,13 +38,7 @@ export default class UserService {
   }
 
   async getRole(token: string): Promise<ServiceResponse<{ role: string }>> {
-    const userData = this.tokenGenerator.validate(token);
-    if (!userData) {
-      return {
-        status: 'UNAUTHORIZED',
-        data: { message: 'Token must be a valid token' },
-      };
-    }
+    const userData = this.tokenGenerator.validate(token) as IUserPayload;
     return { status: 'SUCCESSFUL', data: { role: userData.role } };
   }
 }

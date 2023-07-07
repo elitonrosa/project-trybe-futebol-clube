@@ -6,8 +6,6 @@ export default function mapStatusHTTP(status: string): number {
       return 201;
     case 'UNAUTHORIZED':
       return 401;
-    case 'INVALID_DATA':
-      return 400;
     case 'NOT_FOUND':
       return 404;
     case 'CONFLICT':
