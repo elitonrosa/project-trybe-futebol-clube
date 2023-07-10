@@ -50,9 +50,6 @@ describe("Testes da rota /leaderboard", () => {
 
         const response = await chai.request(app).get("/leaderboard/");
 
-        console.log(response.body);
-        
-
         expect(response.status).to.be.eq(200);
         expect(response.body).to.be.deep.eq(allLeaderboard);
       });
