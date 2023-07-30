@@ -104,7 +104,7 @@ export default abstract class Leaderboard {
       });
   }
 
-  static getLeaderbord(
+  static getLeaderboard(
     teams: ITeam[],
     matches: IMatch[],
     matchType: LeaderboardType,

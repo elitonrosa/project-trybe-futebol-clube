@@ -19,7 +19,7 @@ export default class LeaderboardService extends Leaderboard {
   ): Promise<ServiceResponse<ILeaderboard[]>> {
     const teams = await this.teamModel.getAll();
     const matches = await this.matchModel.getAllFinished();
-    const leaderboard = Leaderboard.getLeaderbord(
+    const leaderboard = Leaderboard.getLeaderboard(
       teams,
       matches,
       matchType,
